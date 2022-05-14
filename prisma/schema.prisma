@@ -40,7 +40,6 @@ model Items {
   image         String
   name          String
   price         Float
-  Quantity      Int
   store_id      String
   store         Store           @relation(fields: [store_id], references: [id])
   checkoutItems CheckoutItems[]
@@ -56,6 +55,7 @@ model Checkout {
   store         Store           @relation(fields: [store_id], references: [id])
   rapydCheckout String
   total         Float
+  paymentStatus String          @default("pending")
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 }
