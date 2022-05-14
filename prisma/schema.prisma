@@ -9,3 +9,77 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Store     Store[]
+}
+
+model Store {
+  id               String     @id @default(uuid())
+  name             String
+  user_id          String
+  owner            User       @relation(fields: [user_id], references: [id])
+  Items            Items[]
+  rapydSecretToken String?
+  rapydAccessToken String?
+  country          String
+  currency         String
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  Checkout         Checkout[]
+}
+
+model Items {
+  id            String          @id @default(uuid())
+  image         String
+  name          String
+  price         Float
+  Quantity      Int
+  store_id      String
+  store         Store           @relation(fields: [store_id], references: [id])
+  checkoutItems CheckoutItems[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Checkout {
+  id            String          @id @default(uuid())
+  checkoutItems CheckoutItems[]
+  address       Address?
+  store_id      String
+  store         Store           @relation(fields: [store_id], references: [id])
+  rapydCheckout String
+  total         Float
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Address {
+  id          String   @id @default(uuid())
+  name        String
+  address     String
+  city        String
+  state       String
+  zip         String
+  country     String
+  phone       String
+  checkout_id String   @unique
+  checkout    Checkout @relation(fields: [checkout_id], references: [id])
+}
+
+model CheckoutItems {
+  id          String   @id @default(uuid())
+  checkout_id String
+  checkout    Checkout @relation(fields: [checkout_id], references: [id])
+  item_id     String
+  item        Items    @relation(fields: [item_id], references: [id])
+  quantity    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
