@@ -1,8 +1,8 @@
-import type {  NextPage } from "next";
+import type { NextPage } from "next";
 import Head from "next/head";
-import { withSessionSsr } from "../lib/withSession";
-import Layout from "../components/Common/Layout";
-import HomeBody from "../components/Home/HomeBody";
+import Layout from "../../components/Common/Layout";
+import NewStoreBody from "../../components/Store/New/NewBody";
+import { withSessionSsr } from "../../lib/withSession";
 
 export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req }) {
@@ -25,17 +25,17 @@ export const getServerSideProps = withSessionSsr(
   }
 );
 
-const Home: NextPage = ({}) => {
+const NewStore: NextPage = ({ user }: any) => {
   return (
     <>
       <Head>
-        <title>Home / Embd</title>
+        <title>New Store / Embd</title>
       </Head>
       <Layout>
-        <HomeBody />
+        <NewStoreBody />
       </Layout>
     </>
   );
 };
 
-export default Home;
+export default NewStore;
