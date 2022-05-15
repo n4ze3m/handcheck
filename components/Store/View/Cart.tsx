@@ -1,7 +1,7 @@
 import { Empty } from "antd";
 import { useRouter } from "next/router";
 import React from "react";
-import axios from "Axios";
+import axios from "axios";
 
 export default function Cart({ state }: any) {
   const [products, setProducts] = React.useState([]);
