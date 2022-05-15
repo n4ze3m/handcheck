@@ -1,5 +1,7 @@
 import { ActionIcon, Group, SimpleGrid } from "@mantine/core";
 import { Card, Drawer, Empty, Layout } from "antd";
+import axios from "axios";
+import { useRouter } from "next/router";
 import React from "react";
 import Cart from "./Cart";
 const { Header, Content } = Layout;
@@ -44,6 +46,28 @@ export default function StoreView({ store }: any) {
           },
         ])
       );
+    }
+  };
+
+  const router = useRouter();
+
+  const quickBuy = async (pid: string) => {
+    try {
+      const store_id = store.id;
+      const products = [
+        {
+          product_id: pid,
+          quantity: 1,
+        },
+      ];
+      const response = await axios.post("/api/checkout/create", {
+        store_id,
+        products,
+      });
+      const id = response.data.checkout;
+      router.push("/checkout/" + id);
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -97,10 +121,15 @@ export default function StoreView({ store }: any) {
           {store.Items.map((item: any) => (
             <Card
               className="mb-4 shadow-md"
+              key={item.id}
               style={{ width: 240 }}
               hoverable
               actions={[
-                <ActionIcon key="quik" className="mx-auto">
+                <ActionIcon
+                  key="quik"
+                  className="mx-auto"
+                  onClick={() => quickBuy(item.id)}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6"

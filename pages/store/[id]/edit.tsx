@@ -1,10 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Layout from "../../../components/Common/Layout";
+import Layout from "@/components/Common/Layout";
 import { withSessionSsr } from "../../../lib/withSession";
-import { PrismaClient } from "@prisma/client";
-import EditBody from "../../../components/Store/Edit/EditBody";
-const prisma = new PrismaClient();
+import { prisma } from "@/database";
+import EditBody from "@/components/Store/Edit/EditBody";
 
 export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req, params }) {

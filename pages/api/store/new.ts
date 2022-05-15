@@ -1,7 +1,6 @@
 import { withSessionRoute } from "../../../lib/withSession";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/database";
 import { rapydRequest } from "../../../lib/rapyd";
-const prisma = new PrismaClient();
 export default withSessionRoute(createNewStore);
 
 

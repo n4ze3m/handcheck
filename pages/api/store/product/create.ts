@@ -1,6 +1,5 @@
 import { withSessionRoute } from "../../../../lib/withSession";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import { prisma } from "@/database";
 export default withSessionRoute(createProduct);
 
 

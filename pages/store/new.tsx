@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Layout from "../../components/Common/Layout";
-import NewStoreBody from "../../components/Store/New/NewBody";
+import Layout from "@/components/Common/Layout";
+import NewStoreBody from "@/components/Store/New/NewBody";
 import { rapydRequest } from "../../lib/rapyd";
 import { withSessionSsr } from "../../lib/withSession";
 

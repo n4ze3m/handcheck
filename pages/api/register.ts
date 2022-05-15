@@ -1,6 +1,5 @@
 import * as bcrypt from "bcrypt";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import { prisma } from "@/database";
 import { withSessionRoute } from "../../lib/withSession";
 
 export default withSessionRoute(registerRoute);

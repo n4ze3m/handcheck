@@ -1,9 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { withSessionSsr } from "../../../lib/withSession";
-import { PrismaClient } from "@prisma/client";
-import StoreView from "../../../components/Store/View/StoreView";
-const prisma = new PrismaClient();
+import { prisma } from "@/database";
+import StoreView from "@/components/Store/View/StoreView";
 
 export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req, params }) {

@@ -1,10 +1,12 @@
 import type { NextPage, GetServerSideProps } from "next";
 import Head from "next/head";
-import { PrismaClient } from "@prisma/client";
 import Script from "next/script";
-import { useEventListener } from "@mantine/hooks";
-const prisma = new PrismaClient({});
-
+import { useEventListener } from "../../hooks/useEventListener";
+import { prisma } from "@/database";
+import React from "react";
+import CheckoutFormBody from "@/components/Checkout/CheckoutFormBody";
+import CheckoutError from "@/components/Checkout/CheckoutError";
+import CheckoutSuccess from "@/components/Checkout/CheckoutSuccess";
 declare global {
   interface Window {
     RapydCheckoutToolkit: any;
@@ -50,51 +52,47 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
 const CheckoutPage: NextPage = ({ checkout }: any) => {
   console.log(checkout);
+  const [isCheckoutError, setIsCheckoutError] = React.useState(false);
+  const [isPaymentError, setIsPaymentError] = React.useState(false);
+  const [isPaymentSuccess, setIsPaymentSuccess] = React.useState(false);
   //
   useEventListener("onCheckoutPaymentSuccess", (e: any) => {
-    console.log("onCheckoutPaymentSuccess", e);
+    if (e?.detail) {
+      console.log("onCheckoutPaymentSuccess", e?.detail);
+      setIsPaymentSuccess(true);
+    }
   });
 
   useEventListener("onCheckoutFailure", (e: any) => {
-    console.log("onCheckoutFailure", e);
+    if (e?.detail) {
+      console.log("onCheckoutFailure", e?.detail);
+      setIsCheckoutError(true);
+    }
   });
 
   useEventListener("onCheckoutPaymentFailure", (e: any) => {
-    console.log("onCheckoutPaymentFailure", e);
+    if (e?.detail) {
+      console.log("onCheckoutFailure", e?.detail);
+      setIsPaymentError(true);
+    }
   });
   return (
     <>
       <Head>
         <title>Checkout / Embd</title>
       </Head>
-      <div className="grid justify-center w-full min-h-screen grid-cols-1 gap-0 m-0 sm:grid-cols-6">
-        <div className="col-span-6 bg-primary sm:col-span-3"></div>
-        <div className="col-span-6 p-10 sm:col-span-3">
-          <div id="rapyd-checkout"> </div>
-        </div>
-      </div>
-      {typeof window !== "undefined" && (
-        <Script
-          id="cdn"
-          src="https://sandboxcheckouttoolkit.rapyd.net"
-          strategy="lazyOnload"
-          onLoad={() => {
-            let c = new window.RapydCheckoutToolkit({
-              pay_button_text: "Pay Now",
-              pay_button_color: "#4BB4D2",
-              id: checkout.rapydCheckout,
-              style: {
-                submit: {
-                  base: {
-                    color: "white",
-                  },
-                },
-              },
-            });
-            c.displayCheckout();
-          }}
-        ></Script>
+      {!isCheckoutError && !isPaymentSuccess && !isPaymentError && (
+        <CheckoutFormBody checkout={checkout} />
       )}
+      {
+        isCheckoutError && <CheckoutError/>
+      }
+      {
+        isPaymentSuccess && <CheckoutSuccess/>
+      }
+      {
+        isPaymentError && <CheckoutError/>
+      }
     </>
   );
 };

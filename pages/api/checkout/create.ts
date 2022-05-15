@@ -1,6 +1,5 @@
-import { PrismaClient } from "@prisma/client"
 import { rapydRequest } from "../../../lib/rapyd"
-const prisma = new PrismaClient()
+import { prisma } from "@/database";
 
 
 interface ICheckout {

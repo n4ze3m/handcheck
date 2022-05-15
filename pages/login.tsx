@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
-import LoginBody from "../components/Login/LoginBody";
+import LoginBody from "@/components/Login/LoginBody";
 
 const LoginPage: NextPage = () => {
   return (
