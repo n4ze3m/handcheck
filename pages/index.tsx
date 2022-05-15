@@ -3,6 +3,8 @@ import Head from "next/head";
 import { withSessionSsr } from "../lib/withSession";
 import Layout from "../components/Common/Layout";
 import HomeBody from "../components/Home/HomeBody";
+import {PrismaClient} from '@prisma/client';
+const pirsma = new PrismaClient();
 
 export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req }) {
@@ -17,22 +19,29 @@ export const getServerSideProps = withSessionSsr(
       };
     }
 
+    const stores = await pirsma.store.findMany({
+      where: {
+        user_id: user.id,
+      }
+    })
+
     return {
       props: {
         user: req.session?.user,
+        stores: JSON.parse(JSON.stringify(stores))
       },
     };
   }
 );
 
-const Home: NextPage = ({}) => {
+const Home: NextPage = ({stores} :any) => {
   return (
     <>
       <Head>
         <title>Home / Embd</title>
       </Head>
       <Layout>
-        <HomeBody />
+        <HomeBody stores={stores} />
       </Layout>
     </>
   );

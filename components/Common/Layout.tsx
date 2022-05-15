@@ -47,7 +47,7 @@ export default function LayoutBody(props: Props) {
             </Dropdown>
           </div>
         </Header>
-        <Content className="m-3 bg-white">
+        <Content className="m-3">
           <div style={{ padding: 24, minHeight: 360 }}>{props.children}</div>
         </Content>
       </Layout>

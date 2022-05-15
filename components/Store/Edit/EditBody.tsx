@@ -1,13 +1,14 @@
-import { Button, Empty, Modal, Typography } from "antd";
+import { SimpleGrid } from "@mantine/core";
+import { Button, Empty, Modal, Typography, Card } from "antd";
 import { useRouter } from "next/router";
-
+const { Meta } = Card;
 const { Title } = Typography;
 import React from "react";
 import ProductCreate from "./ProductCreate";
 
 export default function EditBody({ store }: any) {
-  const router = useRouter();
   const [isModalVisible, setIsModalVisible] = React.useState(false);
+  const router = useRouter();
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -29,7 +30,7 @@ export default function EditBody({ store }: any) {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <ProductCreate />
+        <ProductCreate close={handleCancel} />
       </Modal>
       <div className="flex  justify-between">
         <Title className="flex" level={3}>
@@ -39,12 +40,55 @@ export default function EditBody({ store }: any) {
           <Button type="primary" onClick={showModal}>
             Add Product
           </Button>
-          <Button className="ml-3">Vist</Button>
+          <Button
+            className="ml-3"
+            target={"_blank"}
+            rel="noopener noreferrer"
+            onClick={() => router.push(`/store/${store.id}`)}
+          >
+            Vist
+          </Button>
         </div>
       </div>
       <div>
-        {store.Items.length}
-        <Empty description="No products added yet" />
+        {store.Items.length === 0 && (
+          <Empty description="No products added yet" />
+        )}
+        <SimpleGrid
+          spacing="xs"
+          mb="md"
+          cols={4}
+          style={{
+            marginTop: "1rem",
+          }}
+          breakpoints={[
+            { maxWidth: 980, cols: 3, spacing: "md" },
+            { maxWidth: 755, cols: 2, spacing: "sm" },
+            { maxWidth: 600, cols: 1, spacing: "sm" },
+          ]}
+        >
+          {store.Items.map((item: any) => (
+            <Card
+              className="mb-4 shadow-md"
+              style={{ width: 240 }}
+              cover={
+                <img
+                  alt={item.name}
+                  className="h-64 w-full object-cover"
+                  src={item.image}
+                />
+              }
+            >
+              <Meta
+                title={item.name}
+                description={new Intl.NumberFormat("en", {
+                  style: "currency",
+                  currency: store.currency,
+                }).format(item.price)}
+              />
+            </Card>
+          ))}
+        </SimpleGrid>
       </div>
     </div>
   );
