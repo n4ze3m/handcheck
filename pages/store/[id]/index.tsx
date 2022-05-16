@@ -40,7 +40,6 @@ export const getServerSideProps = withSessionSsr(
 );
 
 const NewStore: NextPage = ({ store }: any) => {
-    console.log(store)
   return (
     <>
       <Head>

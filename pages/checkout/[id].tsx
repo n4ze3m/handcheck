@@ -1,12 +1,12 @@
 import type { NextPage, GetServerSideProps } from "next";
 import Head from "next/head";
-import Script from "next/script";
 import { useEventListener } from "../../hooks/useEventListener";
 import { prisma } from "@/database";
 import React from "react";
 import CheckoutFormBody from "@/components/Checkout/CheckoutFormBody";
 import CheckoutError from "@/components/Checkout/CheckoutError";
 import CheckoutSuccess from "@/components/Checkout/CheckoutSuccess";
+import axios from "axios";
 declare global {
   interface Window {
     RapydCheckoutToolkit: any;
@@ -31,19 +31,19 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       paymentStatus: true,
       checkoutItems: {
         include: {
-          item: true
-        }
+          item: true,
+        },
       },
-      store_id:true,
+      store_id: true,
       total: true,
       store: {
         select: {
           name: true,
           country: true,
-          currency: true
-        }
-      }
-    }
+          currency: true,
+        },
+      },
+    },
     // include: {
     //   checkoutItems: {
     //     include: {
@@ -70,14 +70,16 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 };
 
 const CheckoutPage: NextPage = ({ checkout }: any) => {
-  console.log(checkout);
   const [isCheckoutError, setIsCheckoutError] = React.useState(false);
   const [isPaymentError, setIsPaymentError] = React.useState(false);
   const [isPaymentSuccess, setIsPaymentSuccess] = React.useState(false);
-  //
-  useEventListener("onCheckoutPaymentSuccess", (e: any) => {
+  const [errMsg, setErrMsg] = React.useState("");
+  useEventListener("onCheckoutPaymentSuccess", async (e: any) => {
     if (e?.detail) {
-      console.log("onCheckoutPaymentSuccess", e?.detail);
+      console.log(e?.detail)
+      await axios.post("/api/checkout/update", {
+        checkout_id: checkout.id,
+      });
       setIsPaymentSuccess(true);
     }
   });
@@ -85,16 +87,23 @@ const CheckoutPage: NextPage = ({ checkout }: any) => {
   useEventListener("onCheckoutFailure", (e: any) => {
     if (e?.detail) {
       console.log("onCheckoutFailure", e?.detail);
+      setErrMsg(e?.detail?.error);
       setIsCheckoutError(true);
     }
   });
 
-  useEventListener("onCheckoutPaymentFailure", (e: any) => {
+  useEventListener("onCheckoutPaymentFailure", async (e: any) => {
     if (e?.detail) {
       console.log("onCheckoutFailure", e?.detail);
+      await axios.post("/api/checkout/update", {
+        checkout_id: checkout.id,
+      });
+      setErrMsg(e?.detail?.error || "Payment failed");
       setIsPaymentError(true);
     }
   });
+
+
   return (
     <>
       <Head>
@@ -103,15 +112,9 @@ const CheckoutPage: NextPage = ({ checkout }: any) => {
       {!isCheckoutError && !isPaymentSuccess && !isPaymentError && (
         <CheckoutFormBody checkout={checkout} />
       )}
-      {
-        isCheckoutError && <CheckoutError/>
-      }
-      {
-        isPaymentSuccess && <CheckoutSuccess/>
-      }
-      {
-        isPaymentError && <CheckoutError/>
-      }
+      {isCheckoutError && <CheckoutError errMsg={errMsg} />}
+      {isPaymentSuccess && <CheckoutSuccess />}
+      {isPaymentError && <CheckoutError errMsg={errMsg} />}
     </>
   );
 };

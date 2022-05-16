@@ -8,7 +8,7 @@ export default function CheckoutFormBody({ checkout }: any) {
         <div className="col-span-6 sm:col-span-3 w-full">
           <div id="rapyd-checkout"> </div>
         </div>
-        <div className="col-span-6 bg-gray-100 sm:col-span-3 p-6 w-full">
+        <div className="col-span-6 md:bg-gray-100 sm:col-span-3 p-6 w-full">
           {/* order summary in tailwind */}
           <h1 className="text-2xl font-bold text-gray-800">
             Order Summary
