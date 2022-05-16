@@ -25,13 +25,32 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     where: {
       id,
     },
-    include: {
+    select: {
+      id: true,
+      rapydCheckout: true,
+      paymentStatus: true,
       checkoutItems: {
         include: {
-          item: true,
-        },
+          item: true
+        }
       },
-    },
+      store_id:true,
+      total: true,
+      store: {
+        select: {
+          name: true,
+          country: true,
+          currency: true
+        }
+      }
+    }
+    // include: {
+    //   checkoutItems: {
+    //     include: {
+    //       item: true,
+    //     },
+    //   },
+    // },
   });
 
   if (!checkout) {
