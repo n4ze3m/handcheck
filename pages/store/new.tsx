@@ -41,7 +41,7 @@ const NewStore: NextPage = ({ countries }: any) => {
   return (
     <>
       <Head>
-        <title>New Store / Embd</title>
+        <title>New Store / HandCheck 🤝</title>
       </Head>
       <Layout>
         <NewStoreBody 

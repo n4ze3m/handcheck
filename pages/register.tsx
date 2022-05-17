@@ -2,14 +2,17 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import RegisterBody from "@/components/Register/RegisterBody";
+import LandingLayout from "@/components/Common/LandingLayout";
 
 const RegisterPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Register / Embd</title>
+        <title>Register / HandCheck 🤝</title>
       </Head>
-      <RegisterBody />
+      <LandingLayout>
+        <RegisterBody />
+      </LandingLayout>
     </>
   );
 };

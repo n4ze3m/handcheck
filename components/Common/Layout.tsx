@@ -1,6 +1,7 @@
 import React from "react";
 import { Col, Layout, Menu, Dropdown, Avatar } from "antd";
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
+import Link from "next/link";
 
 interface Props {
   children: React.ReactNode;
@@ -23,13 +24,17 @@ export default function LayoutBody(props: Props) {
           console.log(collapsed, type);
         }}
       >
-        <div className="text-white text-xl font-bold m-3 p-3">Embd</div>
+        <div className="text-md text-white cursor-pointer font-bold m-3 p-3">
+          <Link href="/">
+            <span>HandCheck 🤝</span>
+          </Link>
+        </div>
         <Menu theme="dark" mode="inline">
           <Menu.Item key="1">
-            <a href="/">Home</a>
+            <Link href="/">Store</Link>
           </Menu.Item>
           <Menu.Item key="2">
-            <a href="/login">Settings</a>
+            <Link href="/">Form</Link>
           </Menu.Item>
         </Menu>
       </Sider>
@@ -39,7 +44,11 @@ export default function LayoutBody(props: Props) {
             <Dropdown
               overlay={
                 <Menu theme="dark">
-                  <Menu.Item key="3">Logout</Menu.Item>
+                  <Menu.Item key="3">
+                    <Link href="/api/logout">
+                    Logout
+                    </Link>
+                  </Menu.Item>
                 </Menu>
               }
             >

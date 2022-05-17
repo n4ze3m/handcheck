@@ -1,10 +1,11 @@
-import { SimpleGrid } from "@mantine/core";
-import { Button, Empty, Modal, Typography, Card } from "antd";
+import { Button, Modal, Typography, Tabs } from "antd";
 import { useRouter } from "next/router";
-const { Meta } = Card;
+const { TabPane } = Tabs;
 const { Title } = Typography;
 import React from "react";
 import ProductCreate from "./ProductCreate";
+import Products from "./Products";
+import Orders from "./Orders";
 
 export default function EditBody({ store }: any) {
   const [isModalVisible, setIsModalVisible] = React.useState(false);
@@ -50,45 +51,17 @@ export default function EditBody({ store }: any) {
           </Button>
         </div>
       </div>
-      <div>
-        {store.Items.length === 0 && (
-          <Empty description="No products added yet" />
-        )}
-        <SimpleGrid
-          spacing="xs"
-          mb="md"
-          cols={4}
-          style={{
-            marginTop: "1rem",
-          }}
-          breakpoints={[
-            { maxWidth: 980, cols: 3, spacing: "md" },
-            { maxWidth: 755, cols: 2, spacing: "sm" },
-            { maxWidth: 600, cols: 1, spacing: "sm" },
-          ]}
-        >
-          {store.Items.map((item: any) => (
-            <Card
-              className="mb-4 shadow-md"
-              style={{ width: 240 }}
-              cover={
-                <img
-                  alt={item.name}
-                  className="h-64 w-full object-cover"
-                  src={item.image}
-                />
-              }
-            >
-              <Meta
-                title={item.name}
-                description={new Intl.NumberFormat("en", {
-                  style: "currency",
-                  currency: store.currency,
-                }).format(item.price)}
-              />
-            </Card>
-          ))}
-        </SimpleGrid>
+      <div className="bg-white p-3 rounded-lg shadow-md"  style={{
+        minHeight: "100vh",
+      }}>
+        <Tabs defaultActiveKey="2" type="card">
+          <TabPane tab="Orders" key="1">
+            <Orders />
+          </TabPane>
+          <TabPane tab="Products" key="2">
+            <Products store={store} />
+          </TabPane>
+        </Tabs>
       </div>
     </div>
   );

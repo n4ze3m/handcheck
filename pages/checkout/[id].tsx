@@ -107,7 +107,7 @@ const CheckoutPage: NextPage = ({ checkout }: any) => {
   return (
     <>
       <Head>
-        <title>Checkout / Embd</title>
+        <title>Checkout / HandCheck 🤝</title>
       </Head>
       {!isCheckoutError && !isPaymentSuccess && !isPaymentError && (
         <CheckoutFormBody checkout={checkout} />

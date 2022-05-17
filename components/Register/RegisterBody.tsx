@@ -2,6 +2,7 @@ import React from "react";
 import { Form, Input, notification } from "antd";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function RegisterBody() {
   const router = useRouter();
@@ -11,7 +12,7 @@ export default function RegisterBody() {
       await axios.post("/api/register", values);
       notification.success({
         message: "Success",
-        description: "Wellcome to Embd",
+        description: "Wellcome to HandCheck 🤝",
       });
       router.push("/");
     } catch (e: any) {
@@ -57,6 +58,17 @@ export default function RegisterBody() {
               Register
             </button>
           </Form>
+          <div className="text-center text-gray-500 mt-3">
+            <span>
+              {"Already have an account? "}
+              <Link
+                className="text-blue-600 hover:text-blue-400"
+                href="/login"
+              >
+                Login
+              </Link>
+            </span>
+            </div>
         </div>
       </div>
     </div>

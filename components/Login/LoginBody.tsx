@@ -2,6 +2,7 @@ import React from "react";
 import { Form, Input, notification } from "antd";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Link from "next/link";
 export default function LoginBody() {
   const router = useRouter();
 
@@ -10,7 +11,7 @@ export default function LoginBody() {
       await axios.post("/api/login", values);
       notification.success({
         message: "Success",
-        description: "Wellcome back to Embd",
+        description: "Wellcome back to HandCheck 🤝",
       });
       router.push("/");
     } catch (e: any) {
@@ -33,12 +34,14 @@ export default function LoginBody() {
           >
             <Form.Item
               name="email"
+              initialValue={"admin@example.com"}
               rules={[{ required: true, message: "Please input your email!" }]}
             >
               <Input type={"email"} placeholder="Enter your email" />
             </Form.Item>
             <Form.Item
               name="password"
+              initialValue={"admin123"}
               rules={[
                 { required: true, message: "Please input your password!" },
               ]}
@@ -50,6 +53,17 @@ export default function LoginBody() {
               Login
             </button>
           </Form>
+          <div className="text-center text-gray-500 mt-3">
+            <span>
+              {"Don't have an account? "}
+              <Link
+                className="text-blue-600 hover:text-blue-400"
+                href="/register"
+              >
+                Register
+              </Link>
+            </span>
+          </div>
         </div>
       </div>
     </div>

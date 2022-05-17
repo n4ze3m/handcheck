@@ -38,7 +38,7 @@ const Home: NextPage = ({ stores }: any) => {
   return (
     <>
       <Head>
-        <title>Home / Embd</title>
+        <title>Home / HandCheck 🤝</title>
       </Head>
       <Layout>
         <HomeBody stores={stores} />

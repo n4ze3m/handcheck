@@ -52,7 +52,7 @@ const NewStore: NextPage = ({ store }: any) => {
   return (
     <>
       <Head>
-        <title>New Store / Embd</title>
+        <title>New Store / HandCheck 🤝</title>
       </Head>
       <Layout>
           <EditBody store={store} />
