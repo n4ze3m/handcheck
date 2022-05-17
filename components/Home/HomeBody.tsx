@@ -5,7 +5,6 @@ import React from "react";
 import RCard from "../Common/RCard";
 export default function HomeBody({ stores }: any) {
   const router = useRouter();
-  console.log(stores);
   return (
     <>
       <Group position="right">

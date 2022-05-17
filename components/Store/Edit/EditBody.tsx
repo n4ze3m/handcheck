@@ -51,9 +51,12 @@ export default function EditBody({ store }: any) {
           </Button>
         </div>
       </div>
-      <div className="bg-white p-3 rounded-lg shadow-md"  style={{
-        minHeight: "100vh",
-      }}>
+      <div
+        className="bg-white p-3 rounded-lg shadow-md"
+        style={{
+          minHeight: "100vh",
+        }}
+      >
         <Tabs defaultActiveKey="2" type="card">
           <TabPane tab="Orders" key="1">
             <Orders />

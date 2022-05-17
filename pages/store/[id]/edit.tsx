@@ -20,22 +20,27 @@ export const getServerSideProps = withSessionSsr(
     }
 
     const store = await prisma.store.findFirst({
-        where: {
-            id,
-            user_id: user.id,
-        },
-        include: {
-            Items: true,
+      where: {
+        id,
+        user_id: user.id,
+      },
+      include: {
+        Items: true,
+        Checkout: {
+          where: {
+            completed: true
+          },
         }
-    })
+      },
+    });
 
-    if(!store) {
-        return {
-            redirect: {
-                destination: "/",
-                permanent: false,
-            },
-        };
+    if (!store) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
     }
 
     return {
@@ -48,14 +53,14 @@ export const getServerSideProps = withSessionSsr(
 );
 
 const NewStore: NextPage = ({ store }: any) => {
-    console.log(store)
+  console.log(store)
   return (
     <>
       <Head>
-        <title>New Store / HandCheck 🤝</title>
+        <title>{store.name} / HandCheck 🤝</title>
       </Head>
       <Layout>
-          <EditBody store={store} />
+        <EditBody store={store} />
       </Layout>
     </>
   );

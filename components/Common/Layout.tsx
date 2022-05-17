@@ -34,7 +34,7 @@ export default function LayoutBody(props: Props) {
             <Link href="/">Store</Link>
           </Menu.Item>
           <Menu.Item key="2">
-            <Link href="/">Form</Link>
+            <Link href="/form">Form</Link>
           </Menu.Item>
         </Menu>
       </Sider>
