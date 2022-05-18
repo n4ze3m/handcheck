@@ -1,4 +1,4 @@
-import { Empty } from "antd";
+import { Empty, notification } from "antd";
 import { useRouter } from "next/router";
 import React from "react";
 import axios from "axios";
@@ -57,10 +57,38 @@ export default function Cart({ state }: any) {
         };
       });
 
+      let email = localStorage.getItem("userEmail");
+
+      if (!email) {
+        // ask for email using prompt
+        email = prompt("Please enter your email");
+        if (!email) {
+          notification.error({
+            message: "Error",
+            description: "Email is required",
+          });
+          return;
+        } else {
+
+          // check if email is valid
+          const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          if (!regex.test(email)) {
+            notification.error({
+              message: "Error",
+              description: "Email is not valid",
+            });
+            return;
+          }
+
+
+          localStorage.setItem("userEmail", email);
+        }
+      }
+
       const data = {
         store_id,
         products: checkoutProduct,
-        email: "demo@demo.com"
+        email
       };
 
       const response = await axios.post("/api/checkout/create", data);

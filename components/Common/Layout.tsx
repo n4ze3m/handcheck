@@ -34,7 +34,7 @@ export default function LayoutBody(props: Props) {
             <Link href="/">store 🏪</Link>
           </Menu.Item>
           <Menu.Item key="2">
-            <Link href="/form">form 📄</Link>
+            <Link href="/campaign">campaign 💰</Link>
           </Menu.Item>
         </Menu>
       </Sider>

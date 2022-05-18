@@ -11,29 +11,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
+  id        String     @id @default(uuid())
   name      String
-  email     String   @unique
+  email     String     @unique
   password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   Store     Store[]
-}
-
-model Form {
-  id               String        @id @default(uuid())
-  name             String
-  rapydSecretToken String
-  rapydAccessToken String
-  country          String
-  currency         String
-  requestAmount    Float         @default(0)
-  hasPayment       Boolean       @default(true)
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  formFields       FormFields[]
-  submissions      Submissions[]
-  formRequest      FormRequest[]
+  Campaign  Campaign[]
 }
 
 model EmailCheckout {
@@ -47,49 +32,6 @@ model EmailCheckout {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-}
-
-model FormRequest {
-  id         String   @id @default(uuid())
-  formId     String
-  form       Form     @relation(fields: [formId], references: [id])
-  checkoutId String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-}
-
-model FormFields {
-  id                  String                @id @default(uuid())
-  name                String
-  type                String
-  required            Boolean
-  value               String
-  formId              String
-  form                Form                  @relation(fields: [formId], references: [id])
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @updatedAt
-  submittedFormFields SubmittedFormFields[]
-}
-
-model Submissions {
-  id        String                @id @default(uuid())
-  formId    String
-  form      Form                  @relation(fields: [formId], references: [id])
-  data      String
-  createdAt DateTime              @default(now())
-  updatedAt DateTime              @updatedAt
-  values    SubmittedFormFields[]
-}
-
-model SubmittedFormFields {
-  id           String      @id @default(uuid())
-  submissionId String
-  submission   Submissions @relation(fields: [submissionId], references: [id])
-  formFieldId  String
-  formField    FormFields  @relation(fields: [formFieldId], references: [id])
-  value        String
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
 }
 
 model Store {
@@ -160,4 +102,35 @@ model CheckoutItems {
   quantity    Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Campaign {
+  id               String             @id @default(uuid())
+  name             String
+  description      String
+  url              String             @unique
+  user_id          String
+  user             User               @relation(fields: [user_id], references: [id])
+  targetAmount     Float              @default(0)
+  rapydSecretToken String
+  rapydAccessToken String
+  country          String
+  currency         String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  response         CampaignResponse[]
+}
+
+model CampaignResponse {
+  id              String   @id @default(uuid())
+  name            String
+  email           String
+  comment         String?
+  amount          Float
+  checkout_id     String
+  displayToPublic Boolean  @default(true)
+  campaign_id     String
+  campaign        Campaign @relation(fields: [campaign_id], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }

@@ -1,5 +1,5 @@
 import { ActionIcon, Group, SimpleGrid } from "@mantine/core";
-import { Card, Drawer, Empty, Layout } from "antd";
+import { Card, Drawer, Empty, Layout, notification } from "antd";
 import axios from "axios";
 import { useRouter } from "next/router";
 import React from "react";
@@ -8,9 +8,11 @@ const { Header, Content } = Layout;
 
 export default function StoreView({ store }: any) {
   const [visible, setVisible] = React.useState(false);
+
   const [triggerState, setTriggerState] = React.useState(
     new Date().getMilliseconds()
   );
+
   const showDrawer = () => {
     setVisible(true);
   };
@@ -60,10 +62,36 @@ export default function StoreView({ store }: any) {
           quantity: 1,
         },
       ];
+
+      // check user email
+      let email = localStorage.getItem("userEmail");
+
+      if (!email) {
+        // ask for email using prompt
+        email = prompt("Please enter your email");
+        if (!email) {
+          notification.error({
+            message: "Error",
+            description: "Email is required",
+          });
+          return;
+        } else {
+          const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          if (!regex.test(email)) {
+            notification.error({
+              message: "Error",
+              description: "Email is not valid",
+            });
+            return;
+          }
+          localStorage.setItem("userEmail", email);
+        }
+      }
+
       const response = await axios.post("/api/checkout/create", {
         store_id,
         products,
-        email: "demo@demo.com"
+        email,
       });
       const id = response.data.checkout;
       router.push("/checkout/" + id);

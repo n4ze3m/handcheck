@@ -28,7 +28,7 @@ export const sendEmail = async (email: string, id: string, store: string) => {
         if (err) {
             console.log(err)
         } else {
-            console.log(info)
+            console.log("mailed")
         }
     })
 }

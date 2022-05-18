@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Layout from "@/components/Common/Layout";
-import NewStoreBody from "@/components/Store/New/NewBody";
+import NewCampaignBody from "@/components/Campaign/New/NewBody";
 import { rapydRequest } from "lib/rapyd";
 import { withSessionSsr } from "lib/withSession";
 
@@ -18,20 +18,19 @@ export const getServerSideProps = withSessionSsr(
       };
     }
 
-
     const response = await rapydRequest({
       accessKey: process.env.RAPYD_ACCESS_KEY!,
       secretKey: process.env.RAPYD_SCRET_KEY!,
       method: "GET",
       urlPath: "/v1/data/countries",
-    })
+    });
 
-    const countries = response.data.data
+    const countries = response.data.data;
 
     return {
       props: {
         user: req.session?.user,
-        countries
+        countries,
       },
     };
   }
@@ -41,12 +40,10 @@ const NewStore: NextPage = ({ countries }: any) => {
   return (
     <>
       <Head>
-        <title>New Store / HandCheck 🤝</title>
+        <title>New Campaign / HandCheck 🤝</title>
       </Head>
       <Layout>
-        <NewStoreBody 
-        countries={countries}
-        />
+        <NewCampaignBody countries={countries} />
       </Layout>
     </>
   );
