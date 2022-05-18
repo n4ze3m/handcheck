@@ -60,6 +60,7 @@ export default function Cart({ state }: any) {
       const data = {
         store_id,
         products: checkoutProduct,
+        email: "demo@demo.com"
       };
 
       const response = await axios.post("/api/checkout/create", data);

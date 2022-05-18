@@ -63,6 +63,7 @@ export default function StoreView({ store }: any) {
       const response = await axios.post("/api/checkout/create", {
         store_id,
         products,
+        email: "demo@demo.com"
       });
       const id = response.data.checkout;
       router.push("/checkout/" + id);

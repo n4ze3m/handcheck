@@ -36,6 +36,19 @@ model Form {
   formRequest      FormRequest[]
 }
 
+model EmailCheckout {
+  id          String   @id @default(uuid())
+  email       String
+  store_id    String
+  checkout_id String
+  store       Store    @relation(fields: [store_id], references: [id])
+  checkout    Checkout @relation(fields: [checkout_id], references: [id])
+  status      String   @default("PENDING")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+}
+
 model FormRequest {
   id         String   @id @default(uuid())
   formId     String
@@ -80,18 +93,19 @@ model SubmittedFormFields {
 }
 
 model Store {
-  id               String     @id @default(uuid())
+  id               String          @id @default(uuid())
   name             String
   user_id          String
-  owner            User       @relation(fields: [user_id], references: [id])
+  owner            User            @relation(fields: [user_id], references: [id])
   Items            Items[]
   rapydSecretToken String?
   rapydAccessToken String?
   country          String
   currency         String
-  createdAt        DateTime   @default(now())
-  updatedAt        DateTime   @updatedAt
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
   Checkout         Checkout[]
+  emailCheckout    EmailCheckout[]
 }
 
 model Items {
@@ -113,12 +127,15 @@ model Checkout {
   store_id      String
   store         Store           @relation(fields: [store_id], references: [id])
   rapydCheckout String
+  email         String?
   total         Float
+  checkoutVia   String?         @default("SITE")
   orderId       String?         @default("-")
   completed     Boolean?        @default(false)
   paymentStatus String          @default("pending")
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
+  EmailCheckout EmailCheckout[]
 }
 
 model Address {

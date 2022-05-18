@@ -29,6 +29,14 @@ export default async function create(req: any, res: any) {
 
     const data = req.body
 
+
+    if (!data.email) {
+        res.status(400).send({
+            message: "Email is required"
+        })
+        return
+    }
+
     const store = await prisma.store.findFirst({
         where: {
             id: data.store_id
@@ -41,6 +49,7 @@ export default async function create(req: any, res: any) {
             error: "Store not found"
         })
     }
+
 
 
     const products = await prisma.items.findMany({
@@ -95,6 +104,7 @@ export default async function create(req: any, res: any) {
             total: total,
             paymentStatus: "pending",
             store_id: data.store_id,
+            email: data.email
         }
     })
 
@@ -109,6 +119,27 @@ export default async function create(req: any, res: any) {
     await prisma.checkoutItems.createMany({
         data: items
     })
+
+    if (data?.isEmailCheckout) {
+        // now we need to send the email
+        await prisma.emailCheckout.create({
+            data: {
+                checkout_id: chk.id,
+                email: data.email,
+                store_id: data.store_id
+            }
+        })
+
+        // await prisma.checkout.update({
+        //     where: {
+        //         id: chk.id
+        //     },
+        //     data: {
+        // checkoutVia: "email"
+        //     }
+        // })
+        // send email
+    }
 
     return res.status(200).send({
         checkout: chk.id

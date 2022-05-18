@@ -74,12 +74,15 @@ const CheckoutPage: NextPage = ({ checkout }: any) => {
   const [isPaymentError, setIsPaymentError] = React.useState(false);
   const [isPaymentSuccess, setIsPaymentSuccess] = React.useState(false);
   const [errMsg, setErrMsg] = React.useState("");
+  const [orderMsg, setOrderMsg] = React.useState("");
   useEventListener("onCheckoutPaymentSuccess", async (e: any) => {
     if (e?.detail) {
       console.log(e?.detail)
-      await axios.post("/api/checkout/update", {
+     const response  =  await axios.post("/api/checkout/update", {
         checkout_id: checkout.id,
       });
+      const orderId = response.data.orderId
+      setOrderMsg(orderId);
       setIsPaymentSuccess(true);
     }
   });
@@ -113,7 +116,7 @@ const CheckoutPage: NextPage = ({ checkout }: any) => {
         <CheckoutFormBody checkout={checkout} />
       )}
       {isCheckoutError && <CheckoutError errMsg={errMsg} />}
-      {isPaymentSuccess && <CheckoutSuccess />}
+      {isPaymentSuccess && <CheckoutSuccess orderId={orderMsg} />}
       {isPaymentError && <CheckoutError errMsg={errMsg} />}
     </>
   );

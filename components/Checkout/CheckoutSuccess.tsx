@@ -1,4 +1,4 @@
-export default function CheckoutSuccess() {
+export default function CheckoutSuccess({ orderId }: any) {
   return (
     <div className="bg-gray-100 h-full">
       <div className="bg-white p-6  md:mx-auto">
@@ -18,10 +18,9 @@ export default function CheckoutSuccess() {
           <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">
             Payment Done!
           </h3>
-          <p className="text-gray-600 my-2">
-            Thank you for your order. We will contact you shortly.
-          </p>
-          <p> Have a great day! </p>
+          <p className="text-gray-600 my-2">Thank you for your order.</p>
+          <p>Use following order id for takeaway your order at the store.</p>
+          <code className="text-sm text-gray-600">{orderId}</code>
         </div>
       </div>
     </div>

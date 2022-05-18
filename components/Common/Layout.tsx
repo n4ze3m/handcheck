@@ -31,10 +31,10 @@ export default function LayoutBody(props: Props) {
         </div>
         <Menu theme="dark" mode="inline">
           <Menu.Item key="1">
-            <Link href="/">Store</Link>
+            <Link href="/">store 🏪</Link>
           </Menu.Item>
           <Menu.Item key="2">
-            <Link href="/form">Form</Link>
+            <Link href="/form">form 📄</Link>
           </Menu.Item>
         </Menu>
       </Sider>

@@ -1,5 +1,6 @@
 import { rapydRequest } from "../../../lib/rapyd"
 import { prisma } from "@/database";
+import { nanoid } from 'nanoid'
 
 interface ICheckoutCheck {
     checkout_id: string,
@@ -92,18 +93,23 @@ export default async function update(req: any, res: any) {
 
     const status = paymentStatusText(paymentStatus)
 
+
+    const orderId = nanoid()
+
     await prisma.checkout.update({
         where: {
             id: checkout.id
         },
         data: {
             paymentStatus: status,
-            completed: true
+            completed: true,
+            orderId
         }
     })
 
     return res.status(200).send({
-        status: status
+        status: status,
+        orderId: orderId
     })
 
 }

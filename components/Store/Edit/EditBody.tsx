@@ -6,6 +6,7 @@ import React from "react";
 import ProductCreate from "./ProductCreate";
 import Products from "./Products";
 import Orders from "./Orders";
+import EmailCheckout from "./EmailCheckout";
 
 export default function EditBody({ store }: any) {
   const [isModalVisible, setIsModalVisible] = React.useState(false);
@@ -59,10 +60,13 @@ export default function EditBody({ store }: any) {
       >
         <Tabs defaultActiveKey="2" type="card">
           <TabPane tab="Orders" key="1">
-            <Orders />
+            <Orders store={store} />
           </TabPane>
           <TabPane tab="Products" key="2">
             <Products store={store} />
+          </TabPane>
+          <TabPane tab="Email Checkout" key="3">
+            <EmailCheckout store={store} />
           </TabPane>
         </Tabs>
       </div>
