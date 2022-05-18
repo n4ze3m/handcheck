@@ -1,9 +1,23 @@
 import { Group } from "@mantine/core";
-import { Button, Form, Modal, Input, Space, Select, InputNumber } from "antd";
+import {
+  Button,
+  Form,
+  Modal,
+  Input,
+  Space,
+  Select,
+  InputNumber,
+  Table,
+} from "antd";
 import React from "react";
-
+import { nanoid } from "nanoid";
+import axios from "axios";
+import { useRouter } from "next/router";
+import Link from "next/link";
 export default function EmailCheckout({ store }: any) {
   const [isModalVisible, setIsModalVisible] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const router = useRouter();
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -17,15 +31,73 @@ export default function EmailCheckout({ store }: any) {
     setIsModalVisible(false);
   };
 
-  const onFinish = (values: any) => {
-    console.log(values)
-  }
+  const onFinish = async (values: any) => {
+    try {
+      setIsLoading(true);
+      const data = {
+        ...values,
+        store_id: store.id,
+        isEmailCheckout: true,
+        via: "EMAIL",
+      };
+      await axios.post("/api/checkout/create", data);
+      router.replace(router.asPath);
+      form.resetFields();
+      handleCancel();
+      setIsLoading(false);
+    } catch (e) {
+      setIsLoading(false);
+      console.log(e);
+    }
+  };
 
+  const [form] = Form.useForm();
+
+  const column = [
+    {
+      title: "Customer Email",
+      dataIndex: "email",
+      key: "email",
+      render: (data: any) =>
+        data ? <Link href={`mailto:${data}`}>{data}</Link> : "N/A",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+    },
+    {
+      title: "Checkout Form",
+      dataIndex: "checkout_id",
+      key: "checkout_id",
+      render: (data: any) => <Link href={`/checkout/${data}`}>{data}</Link>,
+    },
+    {
+      title: "Created At",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (createdAt: any) =>
+        new Intl.DateTimeFormat("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        }).format(new Date(createdAt)),
+    },
+  ];
   return (
     <div>
       <Button type="primary" onClick={showModal}>
         Email Checkout
       </Button>
+
+      <Table
+        className="mt-3"
+        columns={column}
+        dataSource={store.emailCheckout}
+      />
 
       <Modal
         visible={isModalVisible}
@@ -33,11 +105,8 @@ export default function EmailCheckout({ store }: any) {
         onCancel={handleCancel}
         footer={null}
       >
-        <div>
-          <Form
-            name="basic"
-            onFinish={onFinish}
-          >
+        <div className="mt-6">
+          <Form form={form} name="basic" onFinish={onFinish}>
             <Form.Item
               label="Email"
               name="email"
@@ -49,10 +118,10 @@ export default function EmailCheckout({ store }: any) {
               name="products"
               rules={[
                 {
-                  validator: (rule, value) => {
-                    if (value.length === 0) {
+                  validator: async (_, value) => {
+                    if (!value || value.length === 0) {
                       return Promise.reject(
-                        "Please select at least one product"
+                        new Error("Please select at least one product")
                       );
                     }
                   },
@@ -61,13 +130,12 @@ export default function EmailCheckout({ store }: any) {
             >
               {(fields, { add, remove }) => {
                 return (
-                  <div>
+                  <>
                     {fields.map((field, index) => (
-                      <Space key={field.key} align="start">
+                      <Space key={nanoid()} align="start">
                         {/* // select and input  */}
                         <Form.Item
-                          {...field }
-                          
+                          {...field}
                           name={[field.name, "product_id"]}
                           rules={[
                             {
@@ -94,7 +162,7 @@ export default function EmailCheckout({ store }: any) {
                             },
                           ]}
                         >
-                          <InputNumber min={1} />
+                          <InputNumber placeholder="Quantity" min={1} />
                         </Form.Item>
                         <Button onClick={() => remove(field.name)}>-</Button>
                       </Space>
@@ -110,11 +178,11 @@ export default function EmailCheckout({ store }: any) {
                         Add Product
                       </Button>
                     </Form.Item>
-                  </div>
+                  </>
                 );
               }}
             </Form.List>
-            <Button type="primary" htmlType="submit">
+            <Button loading={isLoading} type="primary" htmlType="submit">
               Submit
             </Button>
           </Form>

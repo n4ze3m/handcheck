@@ -28,15 +28,15 @@ async function checkCheckout(checkoutCheck: ICheckoutCheck) {
 function paymentStatusText(status: string) {
     switch (status) {
         case "CLO":
-            return "Payment success"
+            return "PAID"
         case "ERR":
-            return "Payment error"
+            return "ERROR"
         case "EXP":
-            return "Payment expired"
+            return "EXPIRED"
         case "CAN":
-            return "Payment canceled"
+            return "CANCELLED"
         default:
-            return "Payment pending"
+            return "PENDING"
     }
 }
 
@@ -106,6 +106,23 @@ export default async function update(req: any, res: any) {
             orderId
         }
     })
+
+    const isEmailCheckout = await prisma.emailCheckout.findFirst({
+        where: {
+            checkout_id: checkout.id
+        }
+    })
+
+    if (isEmailCheckout) {
+        await prisma.emailCheckout.update({
+            where: {
+                id: isEmailCheckout.id
+            },
+            data: {
+                status: status === "PAID" ? "SUCCESS" : "UNSUCCESS"
+            }
+        })
+    }
 
     return res.status(200).send({
         status: status,

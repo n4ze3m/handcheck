@@ -28,9 +28,17 @@ export const getServerSideProps = withSessionSsr(
         Items: true,
         Checkout: {
           where: {
-            completed: true
+            completed: true,
           },
-        }
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+        emailCheckout: {
+          orderBy: {
+            updatedAt: "desc",
+          },
+        },
       },
     });
 
@@ -53,7 +61,7 @@ export const getServerSideProps = withSessionSsr(
 );
 
 const NewStore: NextPage = ({ store }: any) => {
-  console.log(store)
+  console.log(store);
   return (
     <>
       <Head>

@@ -1,12 +1,19 @@
 import { Table } from "antd";
+import Link from "next/link";
 
 export default function Orders({ store }: any) {
-
   const columns = [
     {
       title: "Order Id",
       dataIndex: "orderId",
       key: "orderId",
+    },
+    {
+      title: "Customer Email",
+      dataIndex: "email",
+      key: "email",
+      render: (data: any) =>
+        data ? <Link href={`mailto:${data}`}>{data}</Link> : "N/A",
     },
     {
       title: "Amount",
@@ -36,7 +43,12 @@ export default function Orders({ store }: any) {
           minute: "2-digit",
           hour12: true,
         }).format(new Date(createdAt)),
-    }
+    },
+    {
+      title: "Checkout From",
+      dataIndex: "checkoutVia",
+      key: "checkoutVia",
+    },
   ];
   return (
     <div>

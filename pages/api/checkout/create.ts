@@ -51,6 +51,9 @@ export default async function create(req: any, res: any) {
     }
 
 
+    const checkoutVia = data?.via || "SITE"
+
+
 
     const products = await prisma.items.findMany({
         where: {
@@ -104,7 +107,8 @@ export default async function create(req: any, res: any) {
             total: total,
             paymentStatus: "pending",
             store_id: data.store_id,
-            email: data.email
+            email: data.email,
+            checkoutVia: checkoutVia,
         }
     })
 
@@ -129,16 +133,6 @@ export default async function create(req: any, res: any) {
                 store_id: data.store_id
             }
         })
-
-        // await prisma.checkout.update({
-        //     where: {
-        //         id: chk.id
-        //     },
-        //     data: {
-        // checkoutVia: "email"
-        //     }
-        // })
-        // send email
     }
 
     return res.status(200).send({
