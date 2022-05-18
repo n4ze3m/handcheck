@@ -1,5 +1,6 @@
 import { rapydRequest } from "../../../lib/rapyd"
 import { prisma } from "@/database";
+import { sendEmail } from "lib/email";
 
 
 interface ICheckout {
@@ -133,6 +134,12 @@ export default async function create(req: any, res: any) {
                 store_id: data.store_id
             }
         })
+
+        await sendEmail(
+            data.email,
+            chk.id,
+            store.name
+        )
     }
 
     return res.status(200).send({

@@ -182,6 +182,9 @@ export default function EmailCheckout({ store }: any) {
                 );
               }}
             </Form.List>
+            <p className="text-sm">
+              This will send email to customer. For demo please only use your or your friend's email to test.          
+            </p>
             <Button loading={isLoading} type="primary" htmlType="submit">
               Submit
             </Button>
