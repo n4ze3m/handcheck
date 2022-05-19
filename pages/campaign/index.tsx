@@ -3,7 +3,7 @@ import Head from "next/head";
 import { withSessionSsr } from "../../lib/withSession";
 import Layout from "@/components/Common/Layout";
 import CampaignHome from "@/components/Campaign/Home/CampaignHome";
-// import { prisma } from "@/database";
+import { prisma } from "@/database";
 
 export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req }) {
@@ -18,21 +18,28 @@ export const getServerSideProps = withSessionSsr(
       };
     }
 
+    const campaigns = await prisma.campaign.findMany({
+      where: {
+        user_id: user.id,
+      },
+    });
+
     return {
       props: {
         user: req.session?.user,
+        campaigns: JSON.parse(JSON.stringify(campaigns)),
       },
     };
   }
 );
 
-const Home: NextPage = () => (
+const Home: NextPage = ({ campaigns }: any) => (
   <>
     <Head>
       <title>Campaign / HandCheck 🤝</title>
     </Head>
     <Layout>
-      <CampaignHome />
+      <CampaignHome campaigns={campaigns}  />
     </Layout>
   </>
 );

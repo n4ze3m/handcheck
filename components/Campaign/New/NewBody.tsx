@@ -1,9 +1,26 @@
-import { Divider, Form, Input, InputNumber, Select } from "antd";
+import { Divider, Form, Input, InputNumber, notification, Select } from "antd";
+import axios from "axios"
+import { useRouter } from "next/router";
 
 export default function NewBody({ countries }: any) {
+  const router = useRouter()
 
  const onFinish = async (values: any) => {
-     console.log(values)
+  try {
+    const response = await axios.post("/api/campaign/create", values);
+    const campaign = response.data.campaign
+    notification.success({
+      message: "Success",
+      description: "Campaign created successfully",
+    });
+    router.push(`/campaign/${campaign}/edit`)
+  } catch (e:any) {
+    console.log(e)
+    notification.error({
+      message: "Error",
+      description: e?.response?.data?.message || "Something went wrong",
+    });
+  }
  }
 
 

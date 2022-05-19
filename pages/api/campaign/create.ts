@@ -24,7 +24,8 @@ async function validateRapyd(accessToken: string, secretKey: string) {
 
 
 async function createNewStore(req: any, res: any) {
-    const user = req.session.user
+    try {
+        const user = req.session.user
     if (!user) {
         return res.status(400).send({
             message: "User not found"
@@ -66,4 +67,10 @@ async function createNewStore(req: any, res: any) {
         message: "Store created successfully",
         campaign: campaign.id,
     })
+    } catch(e:any) {
+        console.log(e)
+        return res.status(500).send({
+            message: "Internal server error"
+        })
+    }
 }

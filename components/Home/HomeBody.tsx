@@ -1,4 +1,4 @@
-import { Button, Card, Text, Grid, Group, SimpleGrid } from "@mantine/core";
+import { Text, Group, SimpleGrid } from "@mantine/core";
 import { Empty } from "antd";
 import { useRouter } from "next/router";
 import React from "react";
