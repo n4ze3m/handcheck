@@ -105,7 +105,7 @@ export default function CampForm({ amount }: any) {
           disabled={loading}
           className="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
         >
-          {loading ? "Loading..." : "Done"}
+          {loading ? "Loading..." : "Donate"}
         </button>
       </Form>
     </div>
