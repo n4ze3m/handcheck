@@ -25,6 +25,9 @@ export const getServerSideProps = withSessionSsr(
             isPaid: true,
             paymentStatus:"PAID"
           },
+          orderBy: {
+            createdAt: "desc",
+          }
         },
       },
     });
