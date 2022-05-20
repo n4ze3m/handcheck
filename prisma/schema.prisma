@@ -70,6 +70,7 @@ model Checkout {
   store         Store           @relation(fields: [store_id], references: [id])
   rapydCheckout String
   email         String?
+  payment_id    String?         @default("-")
   total         Float
   checkoutVia   String?         @default("SITE")
   orderId       String?         @default("-")
@@ -123,13 +124,16 @@ model Campaign {
 
 model CampaignResponse {
   id              String   @id @default(uuid())
-  name            String
+  name            String?  @default("Anonymous")
   email           String
   comment         String?
   amount          Float
   checkout_id     String
   displayToPublic Boolean  @default(true)
   campaign_id     String
+  paymend_id      String?
+  paymentStatus   String   @default("PENDING")
+  isPaid          Boolean   @default(false)
   campaign        Campaign @relation(fields: [campaign_id], references: [id])
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

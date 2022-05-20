@@ -105,7 +105,7 @@ export default function NewBody({ countries }: any) {
             Rapyd Dashboard
           </a>
           . This site is only for demo purposes do not use your production
-          credentials. You can self host embd for production.
+          credentials. You can self host handcheck for production.
         </p>
         <Form.Item
           name="rapydSecretToken"
