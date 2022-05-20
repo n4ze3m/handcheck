@@ -18,6 +18,7 @@ async function generateCheckout(checkout: ICheckout) {
             body: checkout.data
         })
         const data = response.data
+        // console.log(data)
         return data["data"]["id"]
     } catch (e) {
         console.log(e)
@@ -61,7 +62,6 @@ export default async function create(req: any, res: any) {
             "merchant_defined": true
         }
     }
-
 
     const checkout_id = await generateCheckout({
         data: checkoutData,
