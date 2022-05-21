@@ -3,8 +3,12 @@ import { Button, Modal, Typography, Tabs } from "antd";
 import { useRouter } from "next/router";
 const { Title } = Typography;
 
-export default function EditBody({ campaign }: any) {
+import CampaignTable from "./CampaignTable"
+import Summary from "./Summary"
+
+export default function EditBody({ campaign, amount }: any) {
   const router = useRouter();
+  console.log(campaign)
 
   return (
     <>
@@ -23,6 +27,10 @@ export default function EditBody({ campaign }: any) {
           </Button>
         </div>
       </div>
+        <div className="mt-3">
+          <Summary amount={amount} />
+          <CampaignTable campaign={campaign} />
+        </div>
     </>
   );
 }

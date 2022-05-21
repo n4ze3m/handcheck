@@ -27,7 +27,8 @@ export const getServerSideProps = withSessionSsr(
           },
           orderBy: {
             createdAt: "desc",
-          }
+          },
+          take: 10
         },
       },
     });

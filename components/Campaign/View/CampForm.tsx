@@ -3,6 +3,7 @@ import React from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Checkout from "./Checkout";
+import { convertCurreny } from "lib/currency";
 export default function CampForm({ amount }: any) {
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
@@ -13,13 +14,6 @@ export default function CampForm({ amount }: any) {
   };
   const onClose = () => {
     setVisible(false);
-  };
-
-  const convertCurreny = (value: any, currency: any) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: currency,
-    }).format(value);
   };
 
   const [form] = Form.useForm();

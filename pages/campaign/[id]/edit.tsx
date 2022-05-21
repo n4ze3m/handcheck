@@ -25,7 +25,14 @@ export const getServerSideProps = withSessionSsr(
         user_id: user.id,
       },
       include: {
-        response: true,
+        response:  {
+          where: {
+            isPaid: true,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        }
       },
     });
 
@@ -38,16 +45,39 @@ export const getServerSideProps = withSessionSsr(
       };
     }
 
+    const totalAmoutCollected = await prisma.campaignResponse.findMany({
+      where: {
+        campaign_id: campaign.id,
+        isPaid: true,
+        paymentStatus: "PAID",
+      },
+    });
+
+    const totalAmount = totalAmoutCollected.reduce((acc: number, cur: any) => {
+      return acc + cur.amount;
+    }, 0);
+
+
+    const percentage = (totalAmount / campaign.targetAmount) * 100;
+    const totalDonation = totalAmoutCollected.length
+
     return {
       props: {
         user: req.session?.user,
         campaign: JSON.parse(JSON.stringify(campaign)),
+        amount: {
+          totalAmount,
+          percentage,
+          totalDonation,
+          targetAmount: campaign.targetAmount,
+          currency: campaign.currency,
+        }
       },
     };
   }
 );
 
-const NewStore: NextPage = ({ campaign }: any) => {
+const NewStore: NextPage = ({ campaign , amount}: any) => {
   console.log(campaign);
   return (
     <>
@@ -55,7 +85,7 @@ const NewStore: NextPage = ({ campaign }: any) => {
         <title>{campaign.name} / HandCheck 🤝</title>
       </Head>
       <Layout>
-        <EditBody campaign={campaign} />
+        <EditBody campaign={campaign} amount={amount} />
       </Layout>
     </>
   );
