@@ -52,7 +52,11 @@ export default function Orders({ store }: any) {
   ];
   return (
     <div>
-      <Table columns={columns} dataSource={store.Checkout} />
+      <Table
+        scroll={{ x: 400 }}
+        columns={columns}
+        dataSource={store.Checkout}
+      />
     </div>
   );
 }

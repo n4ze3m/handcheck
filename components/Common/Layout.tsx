@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Layout, Menu, Dropdown, Avatar } from "antd";
+import { Col, Layout, Menu, Dropdown, Avatar, Badge } from "antd";
 const { Header, Content, Sider } = Layout;
 import Link from "next/link";
 
@@ -26,7 +26,13 @@ export default function LayoutBody(props: Props) {
       >
         <div className="text-md text-white cursor-pointer font-bold m-3 p-3">
           <Link href="/">
-            <span>HandCheck 🤝</span>
+            <Badge count={"pre-alpha"} size="small" style={{
+              backgroundColor: "#1890ff",
+            }}>
+              <div className="p-3">
+              <span className="text-white">HandChecks 🤝</span>
+              </div>
+            </Badge>
           </Link>
         </div>
         <Menu theme="dark" mode="inline">
@@ -46,7 +52,7 @@ export default function LayoutBody(props: Props) {
                 <Menu theme="dark">
                   <Menu.Item key="3">
                     <Link href="/api/logout">
-                    Logout
+                      Logout
                     </Link>
                   </Menu.Item>
                 </Menu>

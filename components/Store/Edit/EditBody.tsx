@@ -42,10 +42,9 @@ export default function EditBody({ store }: any) {
           <Button type="primary" onClick={showModal}>
             Add Product
           </Button>
+          
           <Button
             className="ml-3"
-            target={"_blank"}
-            rel="noopener noreferrer"
             onClick={() => router.push(`/store/${store.id}`)}
           >
             Vist
