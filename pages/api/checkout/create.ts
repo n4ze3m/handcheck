@@ -26,6 +26,25 @@ async function generateCheckout(checkout: ICheckout) {
     }
 }
 
+
+async function getPaymentMethod(checkout: ICheckout) {
+    try {
+        const response = await rapydRequest({
+            accessKey: checkout.accessToken,
+            secretKey: checkout.secretKey,
+            method: "GET",
+            urlPath: "/v1/payment_methods/country?country=" + checkout.data,
+        })
+        const data = response.data["data"]
+        const method = data.filter((item: any) => item.category === "card")
+        const payment_methods = method.map((item: any) => item.type)
+        return payment_methods
+    } catch(e){
+        console.log(e)
+        return []
+    }
+}
+
 export default async function create(req: any, res: any) {
 
     const data = req.body
@@ -77,6 +96,14 @@ export default async function create(req: any, res: any) {
     }, 0)
 
 
+    const payment_methods = await getPaymentMethod({
+        accessToken: store.rapydAccessToken!,
+        secretKey: store.rapydSecretToken!,
+        data: store.country
+    })
+
+
+
     const checkoutData = {
         "amount": total,
         "country": store.country,
@@ -85,7 +112,8 @@ export default async function create(req: any, res: any) {
         "language": "en",
         "metadata": {
             "merchant_defined": true
-        }
+        },
+        "payment_method_types_include": payment_methods,
     }
 
 
