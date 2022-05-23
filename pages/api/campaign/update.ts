@@ -19,7 +19,7 @@ async function checkCheckout(checkoutCheck: ICheckoutCheck) {
         const data = response.data
         // console.log(data)
         return {
-            status: data["data"]["status"],
+            status: data["data"]["payment"]["status"],
             payment_id: data["data"]["payment"]["id"],
         }
     } catch (e) {
