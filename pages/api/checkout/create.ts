@@ -171,6 +171,7 @@ export default async function create(req: any, res: any) {
     }
 
     return res.status(200).send({
-        checkout: chk.id
+        checkout: chk.id,
+        checkout_id
     })
 }

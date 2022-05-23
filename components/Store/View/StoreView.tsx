@@ -93,8 +93,9 @@ export default function StoreView({ store }: any) {
         products,
         email,
       });
-      const id = response.data.checkout;
-      router.push("/checkout/" + id);
+      const id = response.data.checkout_id
+      console.log(id)
+      // router.push("/checkout/" + id);
     } catch (e) {
       console.log(e);
     }
