@@ -9,14 +9,14 @@ RUN export NODE_ENV=production
 RUN yarn
 
 COPY . .
-RUN yarn run prisma:generate
+RUN yarn run prisma generate
 RUN yarn build
 
 FROM base as prod-build
 
 RUN yarn install --production
 COPY prisma prisma
-RUN yarn run prisma:generate
+RUN yarn run prisma generate
 RUN cp -R node_modules prod_node_modules
 
 FROM base as prod
