@@ -14,6 +14,12 @@ export default async function handler(
 
     console.log(req.body)
 
+
+    // const data = req.body['data']
+
+    // const checkout_id = data['complete_payment_url'].split('/')[4]
+    // console.log(check)
+
     const response = {
         name: 'test'
     }

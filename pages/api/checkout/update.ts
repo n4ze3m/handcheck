@@ -17,7 +17,8 @@ async function checkCheckout(checkoutCheck: ICheckoutCheck) {
             urlPath: `/v1/checkout/${checkoutCheck.checkout_id}`
         })
         const data = response.data
-        return data["data"]["status"]
+        // console.log(data)
+        return data["data"]["payment"]["status"]
     } catch (e) {
         console.log(e)
         return null
@@ -35,6 +36,8 @@ function paymentStatusText(status: string) {
             return "EXPIRED"
         case "CAN":
             return "CANCELLED"
+        case "DON":
+            return "SUCCESS"
         default:
             return "PENDING"
     }
