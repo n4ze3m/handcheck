@@ -1,34 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# HandCheck 🤝
 
-## Getting Started
+All in one tool for collecting money from customers.  HandCheck will help users to create e-commerce stores , crowdfunding pages and other online businesses using  Rapyd’s Hosted Checkout Toolkit
 
-First, run the development server:
+## Inspiration
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+HandCheck is inspired from many other tools that are available for collecting money from customers. For example Shopify for E-commerce,  GoFundMe for crowdfunding, and others. But HandCheck is not a one-size-fits-all tool. It is a tool that can be used for any kind of business.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## What it does
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Currently HandCheck is in pre-alpha version. Theses are the features that HandCheck is currently having:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- Create Ecommerce stores with Fast Checkout, Cart Checkout and Email Checkout 
+- Create Crowdfunding page
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+_Note: All checkout features are using `Rapyd` Embedded checkout form_
 
-## Learn More
+## How we built it
 
-To learn more about Next.js, take a look at the following resources:
+We built HandCheck using following technologies:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Next.js 
+- Rapyd Embedded Checkout Form
+- Tailwind CSS
+- Ant Design
+- Postgres
+- Prisma
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Challenges we ran into
 
-## Deploy on Vercel
+We ran into following challenges while building HandCheck:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- CSS issues with Rapyd Iframe not suitable for our mobile design
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Accomplishments that we're proud of
+
+So far we're proud of:
+
+1. Email Checkout
+    - Storefront Admin can send email to customers to pay for their order
+    - This feature is good for telephonic order
+2. Fast Checkout
+    - Customers can pay for their order in a few seconds without redirecting to payment page
+3. Crowdfunding page
+    - HandCheck user can create crowdfunding page to collect money from customers like GoFundMe or Buy Me a Coffee.
+
+
+## What we learned
+
+We learned a lot while building HandCheck. 
+
+- We learned how to use `next.js` and `prisma` to build a serverless app.
+- We learned how to use `rapyd` to build embedded checkout form with few lines of code.
+
+
+## What's next for HandCheck
+
+Next steps for HandCheck:
+
+- Add more features and customizations for HandCheck Storefront page
+- Fix CSS issues and mobile design
+- Add more features for Crowdfunding page like real-time communication with author
+- Notify customers when their order is paid and order status is updated
+- Fix current security and privacy issues
