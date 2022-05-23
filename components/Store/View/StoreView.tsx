@@ -1,24 +1,26 @@
 import { ActionIcon, Group, SimpleGrid } from "@mantine/core";
 import { Card, Drawer, Empty, Layout, notification } from "antd";
 import axios from "axios";
-import { useRouter } from "next/router";
 import React from "react";
 import Cart from "./Cart";
+import FastCheckout from "./FastCheckout";
 const { Header, Content } = Layout;
 
 export default function StoreView({ store }: any) {
   const [visible, setVisible] = React.useState(false);
+  const [fastVisible, setFastVisible] = React.useState(false);
 
+  const [fastCheckout, setFastCheckout] = React.useState<any>();
   const [triggerState, setTriggerState] = React.useState(
     new Date().getMilliseconds()
   );
-
-  const showDrawer = () => {
-    setVisible(true);
-  };
-  const onClose = () => {
-    setVisible(false);
-  };
+  // drawer
+  // cart
+  const showDrawer = () => setVisible(true);
+  const onClose = () => setVisible(false);
+  // checkout
+  const showFastDrawer = () => setFastVisible(true);
+  const onFastClose = () => setFastVisible(false);
 
   const addProductToCart = (item: any) => {
     const cart = localStorage.getItem("products-" + store.id);
@@ -51,8 +53,6 @@ export default function StoreView({ store }: any) {
     }
   };
 
-  const router = useRouter();
-
   const quickBuy = async (pid: string) => {
     try {
       const store_id = store.id;
@@ -76,7 +76,8 @@ export default function StoreView({ store }: any) {
           });
           return;
         } else {
-          const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          const regex =
+            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           if (!regex.test(email)) {
             notification.error({
               message: "Error",
@@ -92,9 +93,10 @@ export default function StoreView({ store }: any) {
         store_id,
         products,
         email,
+        via: "FAST",
       });
-      const id = response.data.checkout_id
-      console.log(id)
+      setFastCheckout(response.data);
+      showFastDrawer();
       // router.push("/checkout/" + id);
     } catch (e) {
       console.log(e);
@@ -109,6 +111,16 @@ export default function StoreView({ store }: any) {
     >
       <Drawer placement="right" onClose={onClose} visible={visible}>
         <Cart state={triggerState} />
+      </Drawer>
+      <Drawer
+        placement="right"
+        onClose={onFastClose}
+        visible={fastVisible}
+        destroyOnClose={true}
+        maskClosable={false}
+        size="large"
+      >
+        <FastCheckout checkout={fastCheckout} />
       </Drawer>
       <Header>
         <Group position="apart" className="mt-3">
