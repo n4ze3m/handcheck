@@ -62,3 +62,17 @@ Next steps for HandCheck:
 - Add more features for Crowdfunding page like real-time communication with author
 - Notify customers when their order is paid and order status is updated
 - Fix current security and privacy issues
+
+## Usefull links
+
+1. [Pizza Store](https://handcheck.n4ze3m.site/store/300349eb-515b-42ae-ba3d-ffed88e52f20)
+2. [Ipsum Campaign](https://handcheck.n4ze3m.site/campaign/ipsum-1653069026346)
+3. [HandCheck](https://handcheck.n4ze3m.site)
+4. [Github Repo](https://github.com/n4ze3m/handcheck)
+
+For playing around with HandCheck, you can use the following credentials:
+
+    - Email: admin@example.com
+    - Password: admin123
+
+Note: Donot use your production raipyd credentials for testing. 
